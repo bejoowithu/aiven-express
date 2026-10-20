@@ -1,22 +1,24 @@
-
 import "dotenv/config";
 import mysql from "mysql2";
 
-const connection = mysql.createPool({
+const connection = mysql.createConnection({
   host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT || 3306),
+  port: Number(process.env.DB_PORT || 9669),
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-
-  waitForConnections: true,
-  connectionLimit: 5,
-  queueLimit: 0,
-  connectTimeout: 10000,
-
   ssl: {
-    rejectUnauthorized: true,
+    rejectUnauthorized: false,
   },
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error("Koneksi database gagal:", err.message);
+    return;
+  }
+
+  console.log("Database berhasil terhubung!");
 });
 
 export default connection;
