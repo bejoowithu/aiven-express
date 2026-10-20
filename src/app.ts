@@ -1,9 +1,8 @@
-import 'dotenv/config';
+
+import express from "express";
 import cors from "cors";
-import express from 'express';
-import authRoutes from './routes/authRoutes.ts';
-import gameRoutes from './routes/gameRoutes.ts';
-import './db/index.ts';
+import authRoutes from "./routes/authRoutes.ts";
+import gameRoutes from "./routes/gameRoutes.ts";
 
 const app = express();
 
@@ -17,20 +16,15 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-
-app.get('/', (req, res) => {
-    res.json({
-        message: 'API berjalan'
-    });
+app.get("/", (_req, res) => {
+  res.json({ message: "GameVault API berjalan" });
 });
 
-app.use('/api/auth', authRoutes);
-app.use('/api/games', gameRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/games", gameRoutes);
 
-const PORT = Number(process.env.PORT) || 9669;
-
-app.listen(PORT, () => {
-    console.log(`Server berjalan di http://localhost:${PORT}`);
-});
+export default app;
